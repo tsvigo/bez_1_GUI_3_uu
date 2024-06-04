@@ -218,7 +218,28 @@ b:
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 d: ;;
+// запишем синапсы
+    // Имя файла для записи
+        QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
+        QFile file3(filename);
 
+        // Открываем файл для записи
+        if (!file3.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            std::cerr << "Unable to open file for writing!" << std::endl;
+
+        }
+
+        QTextStream out(&file3);
+
+        // Записываем данные из вектора в файл
+        for (const auto& value : *list_of_synapses) {
+            out << value << "\n";
+        }
+
+        // Закрываем файл
+        file3.close();
+
+        std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
 
 
 
