@@ -13,7 +13,7 @@
 #include <QMessageBox>
 //########################################################################################################
 QString Nazvaniye_fayla_s_neyronami_i_signalom;
-int variable_synapse_index_counter=10100; 
+int variable_synapse_index_counter=0;
 int var =100;
  int neuron_index = 0, synapse_index = 0;
  bool all_sinapsi_proydeni=false;
