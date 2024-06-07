@@ -113,6 +113,7 @@ Dialog::Dialog(QWidget *parent)
            int chislo_oshibok_sinapsov=0;
      std::cout << "читаем синапсы в вектор"<< std::endl;
     QFile file2("/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt");
+              // /home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt
        if (!file2.open(QIODevice::ReadOnly | QIODevice::Text)) {
       qDebug() << "Не удалось открыть файл!";
                       }
@@ -165,11 +166,14 @@ qDebug() << "Строка не является числовой, или зна�
 
       {
           ui->label->setText(Nazvaniye_fayla_s_neyronami_i_signalom+"\n"+"Программа считает что это 1.");
+        std::cout << "list_of_neurons->at(200) = "<< list_of_neurons->at(200)<< std::endl;
          // Odin_Programmi=true;
-             goto d;
+           //  goto d;
       }
                              else {
           ui->label->setText(Nazvaniye_fayla_s_neyronami_i_signalom+"\n"+"Программа считает что это не 1.");
+          std::cout << "list_of_neurons->at(200) = "<< list_of_neurons->at(200)<< std::endl;
+          goto d;
           //  Odin_Programmi=false;
 
       }
@@ -186,7 +190,7 @@ qDebug() << "Строка не является числовой, или зна�
            ; ++var) // This is the range of neurons
 
           {
-              if (list_of_neurons->at(200)<0) break;
+         //     if (list_of_neurons->at(200)>=0) break;
               for ( neuron_index = 0, synapse_index = 0;
 
                 /*,*/ synapse_index < 10100;
@@ -220,7 +224,7 @@ qDebug() << "Строка не является числовой, или зна�
        ;
             ++neuron_index, ++synapse_index)
           {
-                    if (list_of_neurons->at(200)<0) break;
+                   // if (list_of_neurons->at(200)>=0) break;
 
     //     if (list_of_synapses->at(synapse_index)!=0)
               list_of_neurons->at(200)
@@ -245,8 +249,9 @@ qDebug() << "Строка не является числовой, или зна�
 std::cout << "list_of_neurons->at(200)= "  <<list_of_neurons->at(200)  <<std::endl;
 std::cout << "variable_synapse_index_counter= "  <<variable_synapse_index_counter  <<std::endl;
 // list_of_synapses->at(variable_synapse_index_counter)
-std::cout << "list_of_synapses->at("<<variable_synapse_index_counter<<")= "  <<list_of_synapses->at(variable_synapse_index_counter)  <<std::endl;
-     if       (list_of_neurons->at(200)<0) goto d;
+std::cout << "list_of_synapses->at("<<variable_synapse_index_counter<<")= "
+          <<list_of_synapses->at(variable_synapse_index_counter)  <<std::endl;
+     if       (list_of_neurons->at(200)>=0) goto d;
 // list_of_synapses->at(synapse_index)
 std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses->at(0) <<std::endl;
 /// подстройка //////////////////////////////////////////////////////////////////////////////////////////////
@@ -287,9 +292,9 @@ all_sinapsi_proydeni=true;
       goto e;
   }
                if(variable_synapse_index_counter==10105)variable_synapse_index_counter=0;
-               if(list_of_neurons->at(200)<0) // не 1
+               if(list_of_neurons->at(200)<0) //  1
                   goto b;
-               if(list_of_neurons->at(200)>=0) // 1
+               if(list_of_neurons->at(200)>=0) // не 1
                 goto d;
               }
           else goto d;
