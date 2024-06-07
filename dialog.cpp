@@ -42,7 +42,7 @@ Dialog::Dialog(QWidget *parent)
 /// Сначала укажем какой файл с нейронами подстроить.
      Nazvaniye_fayla_s_neyronami_i_signalom = QFileDialog::getOpenFileName(this,
        tr("Открыть файл neyroni_i_signal.txt без 1 который надо подстроить."), 
-       "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/", tr("Text Files (*.txt)"));
+       "/home/viktor/Загрузки/data/none/300/masshtab/black-white/", tr("Text Files (*.txt)"));
 //########################################################################################################
 ////////////////////////////////////////////// загрузка нейронов и сигнала из файла в вектор
 // читаем нейроны в вектор
@@ -154,31 +154,45 @@ b:
      ; ++var) // This is the range of neurons
 
     {
-        for ( neuron_index = 0, synapse_index = 0;
+        for ( neuron_index = 0, synapse_index = 0; // первый for
 
           /*,*/ synapse_index < 10100; 
             ++neuron_index, synapse_index = synapse_index + 100)
         
         { // // ошибка сегментации
         
-
+//###########################################################################
         if (neuron_index < 200)
-            list_of_neurons->at(var)=list_of_neurons->at(var) //-5310911
-            +  (list_of_neurons->at(neuron_index)/  
-             list_of_synapses->at(synapse_index)); // + на - 
+
+            list_of_neurons->at(var)
+                    =
+                    list_of_neurons->at(var) //-5310911
+            +
+                    (list_of_neurons->at(neuron_index)
+                //     /
+                     -
+             list_of_synapses->at(synapse_index))
+                    ; // + на -
               
         } // 
     }
 //////////////////////
-    for (int   neuron_index = 100, synapse_index = 10000;
+    for (int   neuron_index = 100, synapse_index = 10000;    // второй for
 
  synapse_index < 10100
  ; 
       ++neuron_index, ++synapse_index)
     {
    if (list_of_synapses->at(synapse_index)!=0)
-        list_of_neurons->at(200) = list_of_neurons->at(200) //-5310911
-        + (list_of_neurons->at(neuron_index) / list_of_synapses->at(synapse_index))
+//###########################################################################
+        list_of_neurons->at(200)
+                =
+                list_of_neurons->at(200) //-5310911
+        +
+                (list_of_neurons->at(neuron_index)
+               //  /
+                 -
+                 list_of_synapses->at(synapse_index))
         ; // + на -
     }    
 //######################################################################################################## 
@@ -190,22 +204,31 @@ b:
 
     { 
         ui->label->setText(Nazvaniye_fayla_s_neyronami_i_signalom+"\n"+"Программа считает что это 1.");
-               if (variable_synapse_index_counter>0) // вот была ошибка
+               if (variable_synapse_index_counter<10101) // вот была ошибка
        {
-       // если все синапсы пройдены, поставлены на минимумы и ошибка не пропала.
+       // если все синапсы пройдены, поставлены на максимумы и ошибка не пропала.
              if (list_of_synapses->at(variable_synapse_index_counter) < 9223372036854775807 // почему 2147483646?
              && list_of_synapses->at(variable_synapse_index_counter) >0
              ) // < 2147483646 или > 1
      {
-        list_of_synapses->at(variable_synapse_index_counter)  =  list_of_synapses->at(variable_synapse_index_counter)-1;  // +1 или -1
-        variable_synapse_index_counter--;
+/////////////////////////// подстройка ////////////////////////////////////////////////////////////////////////////
+        list_of_synapses->at(variable_synapse_index_counter)
+                =
+                list_of_synapses->at(variable_synapse_index_counter)
+               // -
+                +
+                1
+                ;  // +1 или -1
+
+        variable_synapse_index_counter++;
+
         std::cout << "list_of_neurons->at(200) = " << list_of_neurons->at(200)<< std::endl;
        goto b;   
      }
      }
         else
       {
-       std::cout << "все синапсы пройдены, поставлены на минимумы и ошибка не пропала." << std::endl;
+       std::cout << "все синапсы пройдены, поставлены на максимумы и ошибка не пропала." << std::endl;
        all_sinapsi_proydeni=true;
        std::cout << "list_of_neurons->at(200) = " <<list_of_neurons->at(200)<< std::endl;
    }
@@ -218,6 +241,8 @@ b:
     }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 d: ;;
+    if ( all_sinapsi_proydeni==true)
+       exit(0);
 // запишем синапсы
     // Имя файла для записи
         QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
@@ -241,7 +266,7 @@ d: ;;
 
         std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
 
-
+//e: ;;
 
 
 
