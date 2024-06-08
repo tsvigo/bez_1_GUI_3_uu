@@ -402,21 +402,22 @@ std::cout << "Программа считает что это не 1."<< std::en
                   for (const auto& value : *list_of_synapses) {
                       out << value << "\n";
                   }
-
+                  // Сбрасываем буфер потока
+                  out.flush();
                   // Закрываем файл
                   file3.close();
 
                   std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
 //###########################################################################
                   // Открываем файл снова для проверки размера
-                  if (!file.open(QIODevice::ReadOnly)) {
-                      std::cerr << "Cannot open file to check size: " << qPrintable(file.errorString()) << std::endl;
+                  if (!file3.open(QIODevice::ReadOnly)) {
+                      std::cerr << "Cannot open file to check size: " << qPrintable(file3.errorString()) << std::endl;
                     //  return 1;
                   }
 
                   // Получаем размер файла
-                  qint64 fileSize = file.size();
-                  file.close();
+                  qint64 fileSize = file3.size();
+                  file3.close();
 
                   // Выводим размер файла
                   std::cout << "The size of the file is: " << fileSize << " bytes." << std::endl;
