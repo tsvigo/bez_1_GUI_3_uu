@@ -79,41 +79,72 @@ Dialog::Dialog(QWidget *parent)
          QFile file(
                //      "/home/viktor/Загрузки/data/none/300/masshtab/black-white/1/neurons_and_signal.txt"
                      "/home/viktor/neurons_and_signal.txt"
+                   // /home/viktor/neurons_and_signal.txt
                      );
          if (!file.exists()) {
              qDebug() << "File does not exist!";
              return;
          }
-         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+         if (!file.open(QIODevice::ReadOnly// | QIODevice::Text
+                        )) {
              qDebug() << "Failed to open the file!";
              return;
          }
-             if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                 qDebug() << "Не удалось открыть файл!";
-                    }
+
 
              // Создание текстового потока для чтения из файла
-             QTextStream in(&file);
-             while (!in.atEnd()) {
-                 QString line = in.readLine();
-                 bool ok;
-                 long long value = line.toLongLong(&ok);
-                 if (ok) {
-                     list_of_neurons->push_back(value);
-                 } else {
-         //            qDebug() << "Не удалось преобразовать строку в число:" << line;
-                 }
-                  if (ok) {
-         //        qDebug() << "Преобразование в long long прошло успешно:";
-         //        qDebug() << "Значение:" << value;
+         QTextStream in(&file);
+//###########################################################################
+//             while (!in.atEnd()) {
+//                 QString line = in.readLine();
+//                 bool ok;
+//                 long long value = line.toLongLong(&ok);
+//                 if (ok) {
+//                     list_of_neurons->push_back(value);
+//                 } else {
+//         //            qDebug() << "Не удалось преобразовать строку в число:" << line;
+//                 }
+//                  if (ok) {
+//         //        qDebug() << "Преобразование в long long прошло успешно:";
+//         //        qDebug() << "Значение:" << value;
+//             } else {
+//         //        qDebug() << "Ошибка преобразования в long long:";
+//         //        qDebug() << "Строка не является числовой, или значение выходит за пределы long long";
+//                   chislo_oshibok_neyronov++;
+//             }
+//             }
+//             // Закрытие файла
+//             file.close();
+//###########################################################################
+
+         // Читаем первые 201 строку из файла
+         int lineCount = 0;
+         while (lineCount < 201 && !in.atEnd()) {
+             QString line = in.readLine();
+             if (line.trimmed().isEmpty()) {
+                 std::cerr << "Line " << (lineCount + 1) << " is empty, skipping." << std::endl;
+                 continue;  // Пропускаем пустые строки
+             }
+
+             bool ok;
+             long long number = line.toLongLong(&ok);
+             if (ok) {
+                 list_of_neurons->push_back(number);
+                 ++lineCount;  // Увеличиваем счетчик только при успешной конвертации
              } else {
-         //        qDebug() << "Ошибка преобразования в long long:";
-         //        qDebug() << "Строка не является числовой, или значение выходит за пределы long long";
-                   chislo_oshibok_neyronov++;
+                 std::cerr << "Failed to convert line " << (lineCount + 1) << " to number: " << qPrintable(line) << std::endl;
              }
-             }
-             // Закрытие файла
-             file.close();
+         }
+
+         // Закрываем файл
+         file.close();
+
+         // Проверка, что удалось прочитать ровно 201 непустую строку
+         if (lineCount != 201) {
+             std::cerr << "Error: Only " << lineCount << " valid lines were read from the file." << std::endl;
+          //   return 1;
+         }
+//###########################################################################
                std::cout << "конец чтения нейронов в вектор"<< std::endl;
                  std::cout << "//########################################################################################################"<< std::endl;
                  std::cout << "число ошибок форматов нейронов = "<< chislo_oshibok_neyronov<< std::endl;
@@ -132,28 +163,59 @@ Dialog::Dialog(QWidget *parent)
 
           // Создание текстового потока для чтения из файла
            QTextStream in2(&file2);
-        while (!in2.atEnd()) {
-         QString line = in2.readLine();
-               bool ok;
-            long long value = line.toLongLong(&ok);
-                 if (ok) {
-                                     list_of_synapses->push_back(value);
-              } else
-                                 {
-                         //            qDebug() << "Не удалось преобразовать строку в число:" << line;
-                                 }
-    if (ok) {
-       //        qDebug() << "Преобразование в long long прошло успешно:";
-          //        qDebug() << "Значение:" << value;
-              } else {
-                         //        qDebug() << "Ошибка преобразования в long long:";
-qDebug() << "Строка не является числовой, или значение выходит за пределы long long: "<< line ;
-                                   chislo_oshibok_sinapsov++;
-                             }
+ ////###########################################################################
 
-                             }
-                             // Закрытие файла
-                             file2.close();
+               // Читаем первые 10105 строк из файла
+               int lineCount2 = 0;
+               while (lineCount2 < 10105 && !in2.atEnd()) {
+                   QString line = in2.readLine();
+                   if (line.trimmed().isEmpty()) {
+                       std::cerr << "Line " << (lineCount2 + 1) << " is empty, skipping." << std::endl;
+                       continue;  // Пропускаем пустые строки
+                   }
+
+                   bool ok;
+                   long long number = line.toLongLong(&ok);
+                   if (ok) {
+                       list_of_neurons->push_back(number);
+                       ++lineCount2;  // Увеличиваем счетчик только при успешной конвертации
+                   } else {
+                       std::cerr << "Failed to convert line " << (lineCount2 + 1) << " to number: " << qPrintable(line) << std::endl;
+                   }
+               }
+
+               // Закрываем файл
+               file2.close();
+
+               // Проверка, что удалось прочитать ровно 201 непустую строку
+               if (lineCount2 != 10105) {
+                   std::cerr << "Error: Only " << lineCount2 << " valid lines were read from the file." << std::endl;
+                 //  return 1;
+               }
+ /////###########################################################################
+//        while (!in2.atEnd()) {
+//         QString line = in2.readLine();
+//               bool ok;
+//            long long value = line.toLongLong(&ok);
+//                 if (ok) {
+//                                     list_of_synapses->push_back(value);
+//              } else
+//                                 {
+//                         //            qDebug() << "Не удалось преобразовать строку в число:" << line;
+//                                 }
+//    if (ok) {
+//       //        qDebug() << "Преобразование в long long прошло успешно:";
+//          //        qDebug() << "Значение:" << value;
+//              } else {
+//                         //        qDebug() << "Ошибка преобразования в long long:";
+//qDebug() << "Строка не является числовой, или значение выходит за пределы long long: "<< line ;
+//                                   chislo_oshibok_sinapsov++;
+//                             }
+
+//                             }
+//                             // Закрытие файла
+//                             file2.close();
+//###########################################################################
  std::cout << "конец чтения синапсов в вектор"<< std::endl;
       std::cout << "//########################################################################################################"<< std::endl;
          std::cout << "число ошибок форматов синапсов = "<< chislo_oshibok_sinapsov<< std::endl;
@@ -321,6 +383,7 @@ if (list_of_neurons->at(200)>=0)
 
 std::cout << "Программа считает что это не 1."<< std::endl;
 }
+//###########################################################################//###########################################################################
           // запишем синапсы
               // Имя файла для записи
                   QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
@@ -344,12 +407,25 @@ std::cout << "Программа считает что это не 1."<< std::en
                   file3.close();
 
                   std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
+//###########################################################################
+                  // Открываем файл снова для проверки размера
+                  if (!file.open(QIODevice::ReadOnly)) {
+                      std::cerr << "Cannot open file to check size: " << qPrintable(file.errorString()) << std::endl;
+                    //  return 1;
+                  }
 
+                  // Получаем размер файла
+                  qint64 fileSize = file.size();
+                  file.close();
+
+                  // Выводим размер файла
+                  std::cout << "The size of the file is: " << fileSize << " bytes." << std::endl;
+//###########################################################################
                   // Sleep for 5 seconds
-                  std::this_thread::sleep_for(std::chrono::seconds(5));
+             //     std::this_thread::sleep_for(std::chrono::seconds(5));
 
                   qDebug() << "Program execution completed.";
-
+//###########################################################################//###########################################################################
 
 
 
