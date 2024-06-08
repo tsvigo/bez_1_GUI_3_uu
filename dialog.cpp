@@ -60,14 +60,14 @@ Dialog::Dialog(QWidget *parent)
 // откроем txt нейроны
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// Диалог открытия файла
-               QString filePath = QFileDialog::getOpenFileName(this, tr("Выберите файл txt"),
-     //QDir::homePath()
-       "/home/viktor/Загрузки/data/none/300/masshtab/black-white/"
-        , tr("Все файлы txt (*.txt)"));
-         if (!filePath.isEmpty()) {
-          // filePath содержит полный путь выбранного файла
-       Nazvaniye_fayla_s_neyronami_i_signalom=filePath;
-               }
+//               QString filePath = QFileDialog::getOpenFileName(this, tr("Выберите файл txt"),
+//     //QDir::homePath()
+//       "/home/viktor/Загрузки/data/none/300/masshtab/black-white/"
+//        , tr("Все файлы txt (*.txt)"));
+//         if (!filePath.isEmpty()) {
+//          // filePath содержит полный путь выбранного файла
+//       Nazvaniye_fayla_s_neyronami_i_signalom=filePath;
+//               }
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //########################################################################################################
          ////////////////////////////////////////////// загрузка нейронов и сигнала из файла в вектор
@@ -75,7 +75,19 @@ Dialog::Dialog(QWidget *parent)
           // Открытие файла для чтения
           int chislo_oshibok_neyronov=0;
               std::cout << "читаем нейроны в вектор"<< std::endl;
-             QFile file(Nazvaniye_fayla_s_neyronami_i_signalom);
+         //    QFile file(Nazvaniye_fayla_s_neyronami_i_signalom);
+         QFile file(
+               //      "/home/viktor/Загрузки/data/none/300/masshtab/black-white/1/neurons_and_signal.txt"
+                     "/home/viktor/neurons_and_signal.txt"
+                     );
+         if (!file.exists()) {
+             qDebug() << "File does not exist!";
+             return;
+         }
+         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+             qDebug() << "Failed to open the file!";
+             return;
+         }
              if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                  qDebug() << "Не удалось открыть файл!";
                     }
@@ -190,6 +202,7 @@ qDebug() << "Строка не является числовой, или зна�
            ; ++var) // This is the range of neurons
 
           {
+  std::cout << "/";
          //     if (list_of_neurons->at(200)>=0) break;
               for ( neuron_index = 0, synapse_index = 0;
 
@@ -215,7 +228,7 @@ qDebug() << "Строка не является числовой, или зна�
                               ; // + на -
 
               } //
-              if       (list_of_neurons->at(200)>=0) goto d; // не 1 - на выход
+            //  if       (list_of_neurons->at(200)>=0) goto d; // не 1 - на выход
           }
       //////////////////////
           for (int   neuron_index = 100, synapse_index = 10000;       // второй for
@@ -239,7 +252,7 @@ qDebug() << "Строка не является числовой, или зна�
                        list_of_synapses->at(synapse_index))
                           )
               ; // + на -
-         if       (list_of_neurons->at(200)>=0) goto d;
+    //     if       (list_of_neurons->at(200)>=0) goto d;
       //   std::cout << "list_of_neurons->at(200)= "  <<list_of_neurons->at(200)  <<std::endl;
           }
 //########################################################################################################
@@ -303,7 +316,11 @@ std::cout << "все синапсы пройдены, поставлены на 
 if(all_sinapsi_proydeni==true) exit(0);
 ////  конец подстройки ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       d:
+if (list_of_neurons->at(200)>=0)
+{
 
+std::cout << "Программа считает что это не 1."<< std::endl;
+}
           // запишем синапсы
               // Имя файла для записи
                   QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
