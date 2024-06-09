@@ -133,9 +133,6 @@ Dialog::Dialog(QWidget *parent)
 
 // ////###########################################################################
 
-
- /////###########################################################################
-
 //###########################################################################
  std::cout << "конец чтения синапсов в вектор"<< std::endl;
       std::cout << "//########################################################################################################"<< std::endl;
@@ -205,7 +202,7 @@ Dialog::Dialog(QWidget *parent)
                           (list_of_neurons->at(neuron_index)
                     //  /   // деление
                            -
-                   list_of_synapses[synapse_index])
+                   list_of_synapses.at(synapse_index))
                               )
                               ; // + на -
 
@@ -231,11 +228,10 @@ Dialog::Dialog(QWidget *parent)
                       (list_of_neurons->at(neuron_index)
                      //  / // деление
                        -
-                       list_of_synapses[synapse_index])
+                       list_of_synapses.at(synapse_index))
                           )
               ; // + на -
-    //     if       (list_of_neurons->at(200)>=0) goto d;
-      //   std::cout << "list_of_neurons->at(200)= "  <<list_of_neurons->at(200)  <<std::endl;
+
           }
 //########################################################################################################
    variable_synapse_index_counter++;
@@ -245,20 +241,18 @@ std::cout << "list_of_neurons->at(200)= "  <<list_of_neurons->at(200)  <<std::en
 std::cout << "variable_synapse_index_counter= "  <<variable_synapse_index_counter  <<std::endl;
 // list_of_synapses->at(variable_synapse_index_counter)
 std::cout << "list_of_synapses->at("<<variable_synapse_index_counter<<")= "
-          <<list_of_synapses[variable_synapse_index_counter]  <<std::endl;
+          <<list_of_synapses.at(variable_synapse_index_counter)  <<std::endl;
      if       (list_of_neurons->at(200)>=0) goto d;
 // list_of_synapses->at(synapse_index)
-std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses[0] <<std::endl;
+std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses.at(0) <<std::endl;
 /// подстройка //////////////////////////////////////////////////////////////////////////////////////////////
 ///
           if       (list_of_neurons->at(200)<0) // если Программа считает что это 1.
-// начиная с variable_synapse_index_counter=10100 надо менять каждый синапс на 1
-//              for (variable_synapse_index_counter=10100;variable_synapse_index_counter>-1;
-//                   variable_synapse_index_counter--)
+
               {
-  list_of_synapses[variable_synapse_index_counter]
+  list_of_synapses.at(variable_synapse_index_counter)
           =
-          list_of_synapses[variable_synapse_index_counter]
+          list_of_synapses.at(variable_synapse_index_counter)
        // -
           +
           1
@@ -268,18 +262,9 @@ std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses[0] <<std::endl;
      // 859689765
           ;
 
-//   if( list_of_synapses->at(0)<=-9223372036854775808)
-// // exit(0);
-//       goto d;
-//   if( list_of_synapses->at(variable_synapse_index_counter)<-9223372036854775808)
-//  exit(0);
-//   if( list_of_synapses->at(variable_synapse_index_counter)<0//-9223372036854775808
-//           )
-//       list_of_synapses->at(variable_synapse_index_counter)=0
-//             //  -9223372036854775808
-//               ;
+
   if (variable_synapse_index_counter==10105 &&
-     list_of_synapses[variable_synapse_index_counter]>=9223372036854775807
+     list_of_synapses.at(variable_synapse_index_counter)>=9223372036854775807
                       //  -9223372036854775808
           )
   {
@@ -315,8 +300,7 @@ cout << "Вектор пуст"<< std::endl;
 }
 //###########################################################################
 // Указываем путь к файлу
-// Указываем путь к файлу
-QString fileName = "output_file.txt"; // укажите путь к вашему файлу
+QString fileName = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt"; // укажите путь к вашему файлу
 QFile file3(fileName);
 
 // Открываем файл для записи
@@ -339,45 +323,10 @@ out.flush();
 // Закрываем файл после записи
 file3.close();
 //###########################################################################
-              // Имя файла для записи
-//                  QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
-//                  // /home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt
-//                  QFile file3(filename);
 
-//                  // Открываем файл для записи
-//                  if (!file3.open(QIODevice::WriteOnly | QIODevice::Text |QIODevice::Truncate)) {
-//                      std::cerr << "Unable to open file for writing!" << std::endl;
-
-//                  }
-
-//                  QTextStream out(&file3);
-
-//                  // Записываем данные из вектора в файл
-//                  for (const auto& value : *list_of_synapses) {
-//                      out << value << "\n";
-//                  }
-//                  // Сбрасываем буфер потока
-//                  out.flush();
-//                  // Закрываем файл
-//                  file3.close();
-
-//                  std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
 ////###########################################################################
-//                  // Открываем файл снова для проверки размера
-//                  if (!file3.open(QIODevice::ReadOnly)) {
-//                      std::cerr << "Cannot open file to check size: " << qPrintable(file3.errorString()) << std::endl;
-//                    //  return 1;
-//                  }
 
-//                  // Получаем размер файла
-//                  qint64 fileSize = file3.size();
-//                  file3.close();
-
-//                  // Выводим размер файла
-//                  std::cout << "The size of the file is: " << fileSize << " bytes." << std::endl;
 //###########################################################################
-                  // Sleep for 5 seconds
-             //     std::this_thread::sleep_for(std::chrono::seconds(5));
 
                   qDebug() << "Program execution completed.";
 //###########################################################################//###########################################################################
