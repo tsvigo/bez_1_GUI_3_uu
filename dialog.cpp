@@ -16,11 +16,7 @@ using namespace std;
 #include <QDebug>
 #include <chrono>
 #include <thread>
-//#include <log4cpp/Category.hh>
-//#include <log4cpp/Appender.hh>
-//#include <log4cpp/Layout.hh>
-//#include <log4cpp/Priority.hh>
-//#include <QLogger>
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 QString    Nazvaniye_fayla_s_neyronami_i_signalom="";
 long long variable_error;
@@ -38,11 +34,7 @@ namespace std {
     }
 }
 //###########################################################################
-// Инициализация умного указателя на std::vector<long long>
-    std::unique_ptr<std::vector<//unsigned
-    long long>> list_of_synapses = std::make_unique<std::vector<
-          //  unsigned
-            long long>>();
+
      std::unique_ptr<std::vector<long long>> list_of_neurons = std::make_unique<std::vector<long long>>();
 //########################################################################################################
 Dialog::Dialog(QWidget *parent)
@@ -59,15 +51,7 @@ Dialog::Dialog(QWidget *parent)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // откроем txt нейроны
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// Диалог открытия файла
-//               QString filePath = QFileDialog::getOpenFileName(this, tr("Выберите файл txt"),
-//     //QDir::homePath()
-//       "/home/viktor/Загрузки/data/none/300/masshtab/black-white/"
-//        , tr("Все файлы txt (*.txt)"));
-//         if (!filePath.isEmpty()) {
-//          // filePath содержит полный путь выбранного файла
-//       Nazvaniye_fayla_s_neyronami_i_signalom=filePath;
-//               }
+
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //########################################################################################################
          ////////////////////////////////////////////// загрузка нейронов и сигнала из файла в вектор
@@ -95,26 +79,7 @@ Dialog::Dialog(QWidget *parent)
              // Создание текстового потока для чтения из файла
          QTextStream in(&file);
 //###########################################################################
-//             while (!in.atEnd()) {
-//                 QString line = in.readLine();
-//                 bool ok;
-//                 long long value = line.toLongLong(&ok);
-//                 if (ok) {
-//                     list_of_neurons->push_back(value);
-//                 } else {
-//         //            qDebug() << "Не удалось преобразовать строку в число:" << line;
-//                 }
-//                  if (ok) {
-//         //        qDebug() << "Преобразование в long long прошло успешно:";
-//         //        qDebug() << "Значение:" << value;
-//             } else {
-//         //        qDebug() << "Ошибка преобразования в long long:";
-//         //        qDebug() << "Строка не является числовой, или значение выходит за пределы long long";
-//                   chislo_oshibok_neyronov++;
-//             }
-//             }
-//             // Закрытие файла
-//             file.close();
+
 //###########################################################################
 
          // Читаем первые 201 строку из файла
@@ -146,90 +111,45 @@ Dialog::Dialog(QWidget *parent)
          }
 //###########################################################################
                std::cout << "конец чтения нейронов в вектор"<< std::endl;
+               if (list_of_neurons->empty()==true)
+
+               {
+               cout << "\nTrue: ";
+
+               cout << "Вектор пуст"<< std::endl;;
+
+               }
                  std::cout << "//########################################################################################################"<< std::endl;
                  std::cout << "число ошибок форматов нейронов = "<< chislo_oshibok_neyronov<< std::endl;
                          std::cout << "//########################################################################################################"<< std::endl;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////// загрузка синапсов из файла в вектор
-  // Открытие файла для чтения
-           int chislo_oshibok_sinapsov=0;
-     std::cout << "читаем синапсы в вектор"<< std::endl;
-    QFile file2("/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt");
-              // /home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt
-       if (!file2.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      qDebug() << "Не удалось открыть файл!";
-                      }
+                         std::ifstream is("/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt");
+                          std::istream_iterator<unsigned long long> start(is), end;
+                          std::vector<unsigned long long> list_of_synapses(start, end);
+                          std::cout << "Read " << list_of_synapses.size() << " numbers" << std::endl;
+//###########################################################################  ///
 
-          // Создание текстового потока для чтения из файла
-           QTextStream in2(&file2);
- ////###########################################################################
+// ////###########################################################################
 
-               // Читаем первые 10105 строк из файла
-               int lineCount2 = 0;
-               while (lineCount2 < 10105 && !in2.atEnd()) {
-                   QString line = in2.readLine();
-                   if (line.trimmed().isEmpty()) {
-                       std::cerr << "Line " << (lineCount2 + 1) << " is empty, skipping." << std::endl;
-                       continue;  // Пропускаем пустые строки
-                   }
 
-                   bool ok;
-                   long long number = line.toLongLong(&ok);
-                   if (ok) {
-                       list_of_neurons->push_back(number);
-                       ++lineCount2;  // Увеличиваем счетчик только при успешной конвертации
-                   } else {
-                       std::cerr << "Failed to convert line " << (lineCount2 + 1) << " to number: " << qPrintable(line) << std::endl;
-                   }
-               }
-
-               // Закрываем файл
-               file2.close();
-
-               // Проверка, что удалось прочитать ровно 201 непустую строку
-               if (lineCount2 != 10105) {
-                   std::cerr << "Error: Only " << lineCount2 << " valid lines were read from the file." << std::endl;
-                 //  return 1;
-               }
  /////###########################################################################
-//        while (!in2.atEnd()) {
-//         QString line = in2.readLine();
-//               bool ok;
-//            long long value = line.toLongLong(&ok);
-//                 if (ok) {
-//                                     list_of_synapses->push_back(value);
-//              } else
-//                                 {
-//                         //            qDebug() << "Не удалось преобразовать строку в число:" << line;
-//                                 }
-//    if (ok) {
-//       //        qDebug() << "Преобразование в long long прошло успешно:";
-//          //        qDebug() << "Значение:" << value;
-//              } else {
-//                         //        qDebug() << "Ошибка преобразования в long long:";
-//qDebug() << "Строка не является числовой, или значение выходит за пределы long long: "<< line ;
-//                                   chislo_oshibok_sinapsov++;
-//                             }
 
-//                             }
-//                             // Закрытие файла
-//                             file2.close();
 //###########################################################################
  std::cout << "конец чтения синапсов в вектор"<< std::endl;
       std::cout << "//########################################################################################################"<< std::endl;
-         std::cout << "число ошибок форматов синапсов = "<< chislo_oshibok_sinapsov<< std::endl;
+//         std::cout << "число ошибок форматов синапсов = "<< chislo_oshibok_sinapsov<< std::endl;
       std::cout << "//########################################################################################################"<< std::endl;
-//########################################################################################################
-//########################################################################################################
-  if (chislo_oshibok_sinapsov!=0 || chislo_oshibok_neyronov!=0)
-      // если есть ошибки в форматах синапсов или нейронов останавливаем
- // программу
-        // Остановить выполнение программы
-                           {
-           exit(EXIT_SUCCESS);
+      if (list_of_synapses.empty()==true)
 
-              }
+      {
+      cout << "\nTrue: ";
+
+      cout << "Вектор пуст"<< std::endl;;
+
+      }
+//########################################################################################################
 
 //########################################################################################################
   //########################################################################################################
@@ -285,7 +205,7 @@ Dialog::Dialog(QWidget *parent)
                           (list_of_neurons->at(neuron_index)
                     //  /   // деление
                            -
-                   list_of_synapses->at(synapse_index))
+                   list_of_synapses[synapse_index])
                               )
                               ; // + на -
 
@@ -311,7 +231,7 @@ Dialog::Dialog(QWidget *parent)
                       (list_of_neurons->at(neuron_index)
                      //  / // деление
                        -
-                       list_of_synapses->at(synapse_index))
+                       list_of_synapses[synapse_index])
                           )
               ; // + на -
     //     if       (list_of_neurons->at(200)>=0) goto d;
@@ -325,10 +245,10 @@ std::cout << "list_of_neurons->at(200)= "  <<list_of_neurons->at(200)  <<std::en
 std::cout << "variable_synapse_index_counter= "  <<variable_synapse_index_counter  <<std::endl;
 // list_of_synapses->at(variable_synapse_index_counter)
 std::cout << "list_of_synapses->at("<<variable_synapse_index_counter<<")= "
-          <<list_of_synapses->at(variable_synapse_index_counter)  <<std::endl;
+          <<list_of_synapses[variable_synapse_index_counter]  <<std::endl;
      if       (list_of_neurons->at(200)>=0) goto d;
 // list_of_synapses->at(synapse_index)
-std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses->at(0) <<std::endl;
+std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses[0] <<std::endl;
 /// подстройка //////////////////////////////////////////////////////////////////////////////////////////////
 ///
           if       (list_of_neurons->at(200)<0) // если Программа считает что это 1.
@@ -336,9 +256,9 @@ std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses->at(0) <<std::endl;
 //              for (variable_synapse_index_counter=10100;variable_synapse_index_counter>-1;
 //                   variable_synapse_index_counter--)
               {
-  list_of_synapses->at(variable_synapse_index_counter)
+  list_of_synapses[variable_synapse_index_counter]
           =
-          list_of_synapses->at(variable_synapse_index_counter)
+          list_of_synapses[variable_synapse_index_counter]
        // -
           +
           1
@@ -359,7 +279,7 @@ std::cout << "list_of_synapses->at(0)= "  <<list_of_synapses->at(0) <<std::endl;
 //             //  -9223372036854775808
 //               ;
   if (variable_synapse_index_counter==10105 &&
-     list_of_synapses->at(variable_synapse_index_counter)>=9223372036854775807
+     list_of_synapses[variable_synapse_index_counter]>=9223372036854775807
                       //  -9223372036854775808
           )
   {
@@ -385,42 +305,76 @@ std::cout << "Программа считает что это не 1."<< std::en
 }
 //###########################################################################//###########################################################################
           // запишем синапсы
-              // Имя файла для записи
-                  QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
-                  // /home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt
-                  QFile file3(filename);
+if (list_of_synapses.empty()==true)
 
-                  // Открываем файл для записи
-                  if (!file3.open(QIODevice::WriteOnly | QIODevice::Text |QIODevice::Truncate)) {
-                      std::cerr << "Unable to open file for writing!" << std::endl;
+{
+cout << "\nTrue: ";
 
-                  }
+cout << "Вектор пуст"<< std::endl;
 
-                  QTextStream out(&file3);
-
-                  // Записываем данные из вектора в файл
-                  for (const auto& value : *list_of_synapses) {
-                      out << value << "\n";
-                  }
-                  // Сбрасываем буфер потока
-                  out.flush();
-                  // Закрываем файл
-                  file3.close();
-
-                  std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
+}
 //###########################################################################
-                  // Открываем файл снова для проверки размера
-                  if (!file3.open(QIODevice::ReadOnly)) {
-                      std::cerr << "Cannot open file to check size: " << qPrintable(file3.errorString()) << std::endl;
-                    //  return 1;
-                  }
+// Указываем путь к файлу
+// Указываем путь к файлу
+QString fileName = "output_file.txt"; // укажите путь к вашему файлу
+QFile file3(fileName);
 
-                  // Получаем размер файла
-                  qint64 fileSize = file3.size();
-                  file3.close();
+// Открываем файл для записи
+if (!file3.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    std::cerr << "Cannot open file for writing: " << qPrintable(file3.errorString()) << std::endl;
 
-                  // Выводим размер файла
-                  std::cout << "The size of the file is: " << fileSize << " bytes." << std::endl;
+}
+
+// Создаем текстовый поток для записи в файл
+QTextStream out(&file3);
+
+// Записываем каждый элемент вектора в файл
+for (const auto& number : list_of_synapses) {
+    out << number << '\n';
+}
+
+// Сбрасываем буфер потока
+out.flush();
+
+// Закрываем файл после записи
+file3.close();
+//###########################################################################
+              // Имя файла для записи
+//                  QString filename = "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt";
+//                  // /home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt
+//                  QFile file3(filename);
+
+//                  // Открываем файл для записи
+//                  if (!file3.open(QIODevice::WriteOnly | QIODevice::Text |QIODevice::Truncate)) {
+//                      std::cerr << "Unable to open file for writing!" << std::endl;
+
+//                  }
+
+//                  QTextStream out(&file3);
+
+//                  // Записываем данные из вектора в файл
+//                  for (const auto& value : *list_of_synapses) {
+//                      out << value << "\n";
+//                  }
+//                  // Сбрасываем буфер потока
+//                  out.flush();
+//                  // Закрываем файл
+//                  file3.close();
+
+//                  std::cout << "Successfully wrote the vector to " << filename.toStdString() << std::endl;
+////###########################################################################
+//                  // Открываем файл снова для проверки размера
+//                  if (!file3.open(QIODevice::ReadOnly)) {
+//                      std::cerr << "Cannot open file to check size: " << qPrintable(file3.errorString()) << std::endl;
+//                    //  return 1;
+//                  }
+
+//                  // Получаем размер файла
+//                  qint64 fileSize = file3.size();
+//                  file3.close();
+
+//                  // Выводим размер файла
+//                  std::cout << "The size of the file is: " << fileSize << " bytes." << std::endl;
 //###########################################################################
                   // Sleep for 5 seconds
              //     std::this_thread::sleep_for(std::chrono::seconds(5));
