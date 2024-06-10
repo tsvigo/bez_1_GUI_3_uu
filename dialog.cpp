@@ -16,7 +16,7 @@ using namespace std;
 #include <QDebug>
 #include <chrono>
 #include <thread>
-
+#include <QMessageBox>
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 QString    Nazvaniye_fayla_s_neyronami_i_signalom="";
 long long variable_error;
@@ -50,8 +50,18 @@ Dialog::Dialog(QWidget *parent)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // откроем txt нейроны
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+               // Запускаем диалог выбора файла при старте приложения
+    QString fileName2 = QFileDialog::getOpenFileName(this, tr("Open Text File"),
+                                   "/home/viktor/Загрузки/data/none/300/masshtab/black-white/",
+            tr("Text Files (*.txt);;All Files (*)"));
+               if (!fileName2.isEmpty()) {
+               ;;  //  QMessageBox::information(this, tr("File Selected"), tr("You selected:\n%1").arg(fileName2));
+               } else {
+               ;;  //  QMessageBox::information(this, tr("No File Selected"), tr("You did not select any file."));
+               }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //########################################################################################################
          ////////////////////////////////////////////// загрузка нейронов и сигнала из файла в вектор
@@ -61,8 +71,9 @@ Dialog::Dialog(QWidget *parent)
               std::cout << "читаем нейроны в вектор"<< std::endl;
          //    QFile file(Nazvaniye_fayla_s_neyronami_i_signalom);
          QFile file(
+                     fileName2
                //      "/home/viktor/Загрузки/data/none/300/masshtab/black-white/1/neurons_and_signal.txt"
-                     "/home/viktor/neurons_and_signal.txt"
+                   //  "/home/viktor/neurons_and_signal.txt"
                    // /home/viktor/neurons_and_signal.txt
                      );
          if (!file.exists()) {
